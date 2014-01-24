@@ -1,0 +1,19 @@
+p {
+	font-family: serif;
+	color: teal;
+}
+
+button {
+
+	/*position:relative;
+	top:2px;
+	left:20px;*/
+	/*position: float.right;*/
+
+}
+
+canvas {
+	position:relative;
+	top:220px;
+
+}
