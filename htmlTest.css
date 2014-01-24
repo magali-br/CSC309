@@ -13,7 +13,9 @@ button {
 }
 
 canvas {
-	position:relative;
-	top:220px;
+	border: 1px dashed red;
+	position: relative;
+	top: 220px;
 
 }
+
