@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Space Invaders 2.0</title>
+<link rel="stylesheet" href="spaceInvaders.css"></link>
+<link rel="shortcut icon" href="SpaceInvaders.ico">
+<meta charset="utf-8">
+</head>
+
+<body style="background-color:#0066FF;">
+
+<h1 style="color:black;"><u>Welcome To Space Invaders!</u></h1>
+<p style="color:black;">To Begin Playing The Game Please Press Play.</p>
+<button type="button" onclick="playGame()">PLAY</button>
+<p></p>
+
+<canvas id="myCanvas" width="768" height="576" style="border:1px solid #0066FF;">
+Your Browser Does Not Support The HTML5 Canvas Tag.
+</canvas>
+
+
+<script>
+
+function playGame()
+{
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.fillStyle="#000000";
+ctx.fillRect(0,0,768,576);
+}
+
+
+
+</script>
+
+</body>
+</html> 
