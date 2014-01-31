@@ -1,3 +1,8 @@
+// To Track Game Status
+var score = 0;
+var lives = 3;
+
+// To Track Movement
 var moveX = 0;
 var moveY = 0;
 
@@ -20,6 +25,24 @@ function drawBackground()
 }
 
 
+function scoreUpdate(score) {
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	context.fillStyle = "white";
+	context.font = "bold 24px Arial";
+	context.fillText("SCORE: " + score, 1, 22);
+}
+
+
+function livesUpdate(lives) {
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	context.fillStyle = "white";
+	context.font = "bold 24px Arial";
+	context.fillText("LIVES: " + lives + "X", 650, 22);
+}
+
+
 function playGame()
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -30,6 +53,8 @@ function playGame()
 	moveY = canvas.height - 42;
 	img.onload = function() {
 		context.drawImage(img, moveX, moveY, 40, 40);
+		scoreUpdate(score);
+		livesUpdate(lives);
 	}
 
 	img.src = "cannon.png";
@@ -61,11 +86,14 @@ function keyPressed(e)
 	drawBackground();
 	img.onload = function() {
 		context.drawImage(img, moveX, moveY, 40, 40);
+		scoreUpdate(score);
+		livesUpdate(lives);
 	}
 
 	img.src = "cannon.png";
 
 }
+
 
 function addMissile() {
 
