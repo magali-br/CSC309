@@ -1,22 +1,29 @@
  p {
 	font-family: arial;
-	color: black;
+	color: white;
 }
 
 body {
-	background-color:#0066FF;
+	background-color:black;
+}
+
+#monsters {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 canvas {
-	border: 1px dashed red;
-	/*position: relative;*/
-	top: 220px;
+	
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 h1 {
 	text-align: center;
 	font-family: arial;
-	color: black;
+	color: white;
 	text-decoration: underline;
 	font-weight: bold;
 }
