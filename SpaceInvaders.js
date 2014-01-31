@@ -1,4 +1,8 @@
 var moveX = 0;
+var moveY = 0;
+
+var missiles = [];
+
 
 function drawBackground()
 {
@@ -10,6 +14,9 @@ function drawBackground()
 	}
 	background.src = "earth.jpg";
 
+	for (var i = 0; i < missiles.length; i++) {
+		missiles[i].draw();
+	}
 }
 
 
@@ -20,8 +27,9 @@ function playGame()
 	var img = new Image();
 	drawBackground();
 	moveX = canvas.width / 2;
+	moveY = canvas.height - 42;
 	img.onload = function() {
-		context.drawImage(img, moveX, (canvas.height - 42), 40, 40);
+		context.drawImage(img, moveX, moveY, 40, 40);
 	}
 
 	img.src = "cannon.png";
@@ -35,8 +43,6 @@ function keyPressed(e)
 	var context=canvas.getContext("2d");
 
 
-	document.getElementById('info').innerHTML = canvas.width + ", moveX;" + moveX;
-
 	var img = new Image();
 
 	if ((e.keyCode == 37) && (moveX >= 5))  {
@@ -47,14 +53,39 @@ function keyPressed(e)
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
+	} else if (e.keyCode == 38) {
+		addMissile();
 	} else {
 		return;
 	}
 	drawBackground();
 	img.onload = function() {
-		context.drawImage(img, moveX, (canvas.height - 42), 40, 40);
+		context.drawImage(img, moveX, moveY, 40, 40);
 	}
 
 	img.src = "cannon.png";
 
+}
+
+function addMissile() {
+
+
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	var missile = new Missile(canvas, moveX, moveY - 1);
+	missiles.push(missile);
+	//missile.draw();
+	drawBackground();
+}
+
+function Missile(canvas, x, y)
+{
+	this.context = canvas.getContext("2d");
+	this.x = x;
+	this.y = y;
+
+	this.draw() = function() {
+		this.context.fillStyle = "yellow";
+		this.context.fillRect(x,y,50,50);
+	}
 }
