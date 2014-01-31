@@ -8,6 +8,50 @@ var moveY = 0;
 
 var missiles = [];
 
+function Missile(canvas, x, y)
+{
+	this.context = canvas.getContext("2d");
+	this.x = x;
+	this.y = y;
+
+	// this.setUpInterval = function() {
+	// 	this.y -= 10; 
+	// }
+
+	this.setUp = function() {
+		window.setInterval(function() {this.y -= 10;},100);
+	}
+	//var intervalVar = 
+
+
+	this.draw = function() {
+		this.context.fillStyle = "yellow";
+		this.context.fillRect(this.x + 18, this.y - 10,2,12);
+		console.log(this.x + ", " + this.y);
+	}
+}
+
+function addMissile() {
+
+
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	var missile = new Missile(canvas, moveX, moveY - 1);
+	console.log(missile);
+	//missile.draw();
+	missile.setUp();
+	missiles.push(missile);
+	//missile.draw();
+	drawBackground();
+}
+
+function Monster(canvas, x, y)
+{
+	this.context = canvas.getContext("2d");
+	this.x = x;
+	this.y = y;
+}
+
 
 function drawBackground()
 {
@@ -22,6 +66,13 @@ function drawBackground()
 	for (var i = 0; i < missiles.length; i++) {
 		missiles[i].draw();
 	}
+}
+
+function clearSelection () {
+	if (document.selection)
+		document.selection.empty();
+	else if (window.getSelection)
+		window.getSelection().removeAllRanges();
 }
 
 
@@ -59,6 +110,8 @@ function playGame()
 
 	img.src = "cannon.png";
 	document.onkeydown=keyPressed;
+
+	clearSelection();
 }
 
 
@@ -94,26 +147,3 @@ function keyPressed(e)
 
 }
 
-
-function addMissile() {
-
-
-	var canvas=document.getElementById("gameCanvas");
-	var context=canvas.getContext("2d");
-	var missile = new Missile(canvas, moveX, moveY - 1);
-	missiles.push(missile);
-	//missile.draw();
-	drawBackground();
-}
-
-function Missile(canvas, x, y)
-{
-	this.context = canvas.getContext("2d");
-	this.x = x;
-	this.y = y;
-
-	this.draw() = function() {
-		this.context.fillStyle = "yellow";
-		this.context.fillRect(x,y,50,50);
-	}
-}
