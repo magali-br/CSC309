@@ -72,8 +72,7 @@ function drawPoint()
 
 function move(pressedKey) {
 
-	//alert(pressedKey.keycode + "   " + window.event);
-	//why is key undefined?
+	//alert(pressedKey.keyCode + "   " + window.event);
 	//keycodes http://unixpapa.com/js/key.html
 	var canvas = document.getElementById("littleCanvas");
 	var ctx = canvas.getContext("2d");
@@ -84,6 +83,37 @@ function move(pressedKey) {
 
 	ctx.fillStyle="red";
 	ctx.fillRect(defenderX, defenderY, defenderWidth, defenderHeight);
+}
+
+
+function keyPressed(e)
+{
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+
+
+	var img = new Image();
+
+	if ((e.keyCode == 37) && (moveX >= 5))  {
+		moveX -= 5;
+	} else if ((e.keyCode == 39) && (moveX <= (canvas.width - 43))) {
+		moveX += 5;
+	} else if ((e.keyCode == 38) && (moveY >= 5))  {
+		moveY -= 5;
+	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
+		moveY += 5;
+	} else if (e.keyCode == 38) {
+		addMissile();
+	} else {
+		return;
+	}
+	drawBackground();
+	img.onload = function() {
+		context.drawImage(img, moveX, moveY, 40, 40);
+	}
+
+	img.src = "m1.png";
+
 }
 
 </script>
