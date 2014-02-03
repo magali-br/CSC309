@@ -6,18 +6,22 @@
 <link rel="stylesheet" href="SpaceInvaders.css"></link>
 <link rel="shortcut icon" href="SpaceInvaders.ico">
 <script src="SpaceInvaders.js"></script>
+<script src="WindowSetup.js"></script>
 <meta charset="utf-8">
 </head>
 
+<body onload="setupCanvas()">
 <h1>Welcome To Space Invaders!</h1>
 <img id="monsters" src="monsters.png">
 <p>To Begin Playing The Game Please Press Play.</p>
 <button type="button" onclick="playGame()">PLAY / RESET</button>
 <p></p>
 
-<canvas id="gameCanvas" width="768" height="576">
+<div id="canvas"></div>
+
+<!-- <canvas id="gameCanvas" width="768" height="576">
 Your Browser Does Not Support The HTML5 Canvas Tag.
-</canvas>
+</canvas> -->
 
 <p></p>
 <p id="info"></p>

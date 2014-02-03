@@ -2,9 +2,12 @@
 var score = 0;
 var lives = 3;
 
-// To Track Movement
+// To track the movement of the cannon
 var moveX = 0;
 var moveY = 0;
+
+var cannonImg;
+var backgroundImg;
 
 var missiles = [];
 
@@ -13,20 +16,19 @@ function Missile(canvas, x, y)
 	this.context = canvas.getContext("2d");
 	this.x = x;
 	this.y = y;
+	this.intervalVar;
 
-	// this.setUpInterval = function() {
-	// 	this.y -= 10; 
-	// }
 
-	this.setUp = function() {
-		window.setInterval(function() {this.y -= 10;},100);
-	}
-	//var intervalVar = 
+	 // this.setUp = function() {
+	 // 	window.setInterval(function() {console.log("the old y is" + this.y), \
+	 // 		this.y -= 10; console.log("the new y is " + this.y); },1000);
+	 // }
+
 
 
 	this.draw = function() {
 		this.context.fillStyle = "yellow";
-		this.context.fillRect(this.x + 18, this.y - 10,2,12);
+		this.context.fillRect(this.x, this.y, 2, 9);
 		console.log(this.x + ", " + this.y);
 	}
 }
@@ -36,13 +38,24 @@ function addMissile() {
 
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	var missile = new Missile(canvas, moveX, moveY - 1);
+	var missile = new Missile(canvas, moveX + 18, moveY - 12);
 	console.log(missile);
-	//missile.draw();
-	missile.setUp();
+
+	//missile.setUp();
 	missiles.push(missile);
-	//missile.draw();
-	drawBackground();
+	missile.intervalVar = window.setInterval(function() {
+				console.log("the old y is" + missile.y); 
+				missile.y -= 10; 
+				console.log("the new y is " + missile.y); 
+				if (missile.y <= 0) {
+					var index = missiles.indexOf(missile);
+					if (index > -1) {
+						missiles.splice(index, 1);
+						console.log("Missile removed");
+						window.clearInterval(missile.intervalVar);
+					}
+				}
+			}, 100);
 }
 
 function Monster(canvas, x, y)
@@ -57,15 +70,18 @@ function drawBackground()
 {
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	var background = new Image();
-	background.onload = function() {
-		context.drawImage(background, 0, 0);
-	}
-	background.src = "earth.jpg";
 
+	context.drawImage(backgroundImg, 0, 0);
 	for (var i = 0; i < missiles.length; i++) {
+		//missiles[i].y -= 10;
 		missiles[i].draw();
 	}
+
+	context.drawImage(cannonImg, moveX, moveY, 40, 40);
+	scoreUpdate(score);
+	livesUpdate(lives);
+
+
 }
 
 function clearSelection () {
@@ -98,18 +114,26 @@ function playGame()
 {
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	var img = new Image();
-	drawBackground();
+	cannonImg = new Image();
+	//drawBackground();
 	moveX = canvas.width / 2;
 	moveY = canvas.height - 42;
-	img.onload = function() {
-		context.drawImage(img, moveX, moveY, 40, 40);
-		scoreUpdate(score);
-		livesUpdate(lives);
+
+	backgroundImg = new Image();
+	backgroundImg.onload = function() {
+		drawBackground();
+
+	}
+	backgroundImg.src = "earth.jpg";
+	
+	cannonImg.onload = function() {
+		drawBackground();
 	}
 
-	img.src = "cannon.png";
+	cannonImg.src = "cannon.png";
 	document.onkeydown=keyPressed;
+
+	window.setInterval("drawBackground()", 100);
 
 	clearSelection();
 }
@@ -131,7 +155,7 @@ function keyPressed(e)
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
-	} else if (e.keyCode == 38) {
+	} else if (e.keyCode == 32 || e.keycode == 38) {
 		addMissile();
 	} else {
 		return;
