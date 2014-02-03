@@ -21,6 +21,23 @@ function drawBackground()
 	context.drawImage(backgroundImg, 0, 0);
 	for (var i = 0; i < missiles.length; i++) {
 		missiles[i].draw();
+		for (var j = 0; j < monsters.length; j++) {
+			if ( (monsters[j].x <= missiles[i].x) 
+				&& (missiles[i].x <= (monsters[j].x + monsters[j].width) ) ) {
+				//&& ( (monsters[j].y + monsters[j].height) == missiles[i].height) ) {
+
+				// remove missile
+				window.clearInterval(missiles[i].intervalVar);
+				missiles.splice(i, 1);
+
+				// remove monster
+				window.clearInterval(monsters[j].intervalVar);
+				monsters.splice(j, 1);
+
+
+				// maybe change number of rows or columns
+			}
+		}
 	}
 
 	for (var i = 0; i < monsters.length; i++) {
@@ -71,6 +88,8 @@ function playGame()
 	cannonImg = new Image();
 	moveX = canvas.width / 2;
 	moveY = canvas.height - 42;
+	missiles = [];
+	monsters = [];
 
 	backgroundImg = new Image();
 	backgroundImg.onload = function() {
