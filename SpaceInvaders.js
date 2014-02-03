@@ -112,6 +112,16 @@ function playGame()
 	var monster3 = new YellowMonster(canvas, 150, 50);
 	addMonster(canvas, monster3);
 
+	var monster4 = new BlueMonster(canvas, 600, 50);
+	addMonster(canvas, monster4);
+
+	var monster5 = new RedMonster(canvas, 650, 50);
+	addMonster(canvas, monster5);
+
+	var monster6 = new YellowMonster(canvas, 700, 50);
+	addMonster(canvas, monster6);
+
+
 	document.onkeydown=keyPressed;
 	window.setInterval("drawBackground()", 100);
 
@@ -135,7 +145,7 @@ function keyPressed(e)
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
-	} else if (e.keyCode == 32 || e.keycode == 38) {
+	} else if ((e.keyCode == 32) || (e.keyCode == 38)) {
 		addMissile();
 	} else {
 		return;
