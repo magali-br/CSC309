@@ -20,8 +20,12 @@ function drawBackground()
 
 	context.drawImage(backgroundImg, 0, 0);
 	for (var i = 0; i < missiles.length; i++) {
-		//missiles[i].y -= 10;
 		missiles[i].draw();
+	}
+
+	for (var i = 0; i < monsters.length; i++) {
+		monsters[i].draw();
+		console.log(monsters[i]);
 	}
 
 	context.drawImage(cannonImg, moveX, moveY, 40, 40);
@@ -65,7 +69,6 @@ function playGame()
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
 	cannonImg = new Image();
-	//drawBackground();
 	moveX = canvas.width / 2;
 	moveY = canvas.height - 42;
 
@@ -79,10 +82,18 @@ function playGame()
 	cannonImg.onload = function() {
 		drawBackground();
 	}
-
 	cannonImg.src = "cannon.png";
-	document.onkeydown=keyPressed;
 
+	var monster1 = new BlueMonster(canvas, 50, 50);
+	addMonster(canvas, monster1);
+
+	var monster2 = new RedMonster(canvas, 100, 50);
+	addMonster(canvas, monster2);
+
+	var monster3 = new YellowMonster(canvas, 150, 50);
+	addMonster(canvas, monster3);
+
+	document.onkeydown=keyPressed;
 	window.setInterval("drawBackground()", 100);
 
 	clearSelection();
@@ -98,9 +109,9 @@ function keyPressed(e)
 	var img = new Image();
 
 	if ((e.keyCode == 37) && (moveX >= 5))  {
-		moveX -= 5;
+		moveX -= 10;
 	} else if ((e.keyCode == 39) && (moveX <= (canvas.width - 43))) {
-		moveX += 5;
+		moveX += 10;
 	/*} else if ((e.keyCode == 38) && (moveY >= 5))  {
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {

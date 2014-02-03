@@ -25,19 +25,14 @@ function addMissile()
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
 	var missile = new Missile(canvas, moveX + 18, moveY - 12);
-	console.log(missile);
 
-	//missile.setUp();
 	missiles.push(missile);
 	missile.intervalVar = window.setInterval(function() {
-				console.log("the old y is" + missile.y); 
 				missile.y -= 10; 
-				console.log("the new y is " + missile.y); 
 				if (missile.y <= 0) {
 					var index = missiles.indexOf(missile);
 					if (index > -1) {
 						missiles.splice(index, 1);
-						console.log("Missile removed");
 						window.clearInterval(missile.intervalVar);
 					}
 				}
