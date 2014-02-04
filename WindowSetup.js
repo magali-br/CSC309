@@ -5,8 +5,13 @@ function setupCanvas() {
 	canvasElement.setAttribute("id", "gameCanvas");
 
 	//<canvas id="gameCanvas" width="768" height="576">
-	canvasElement.setAttribute("width", window.innerWidth / 1.5);
-	canvasElement.setAttribute("height", window.innerHeight * 2 / 3);
+	// for adapting canvas size
+	//canvasElement.setAttribute("width", window.innerWidth / 1.5);
+	//canvasElement.setAttribute("height", window.innerHeight * 2 / 3);
+
+	// For bigger screen 
+	canvasElement.setAttribute("width", 768);
+	canvasElement.setAttribute("height", 576);
 	divCanvas.appendChild(canvasElement);
 }
 

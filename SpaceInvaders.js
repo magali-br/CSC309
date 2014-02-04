@@ -1,6 +1,7 @@
 // To Track Game Status
-var score = 0;
-var lives = 3;
+var score;
+var lives;
+var speed = 500;
 
 // To track the movement of the cannon
 var moveX = 0;
@@ -22,9 +23,7 @@ function drawBackground()
 	for (var i = 0; i < missiles.length; i++) {
 		missiles[i].draw();
 		for (var j = 0; j < monsters.length; j++) {
-			if ( (monsters[j].x <= missiles[i].x) 
-				&& (missiles[i].x <= (monsters[j].x + monsters[j].width) ) ) {
-				//&& ( (monsters[j].y + monsters[j].height) == missiles[i].height) ) {
+			if (missileHitMonster(missiles[i], monsters[j])) {
 
 				// remove missile
 				window.clearInterval(missiles[i].intervalVar);
@@ -34,8 +33,9 @@ function drawBackground()
 				window.clearInterval(monsters[j].intervalVar);
 				monsters.splice(j, 1);
 
+				score += 10;
 
-				// maybe change number of rows or columns
+
 			}
 		}
 	}
@@ -44,12 +44,25 @@ function drawBackground()
 		monsters[i].draw();
 		console.log(monsters[i]);
 	}
+	if (monsters.length == 0) {
+		nextLevel();
+	}
 
 	context.drawImage(cannonImg, moveX, moveY, 40, 40);
 	scoreUpdate(score);
 	livesUpdate(lives);
 
+}
 
+function missileHitMonster(missile, monster)
+{
+	if ( (monster.x <= missile.x) 
+		&& (missile.x <= (monster.x + monster.width) )
+		&& (monster.y <= missile.y)
+		&& (missile.y <= (monster.y + monster.height)) ) {
+			return true;
+		}
+	return false;
 }
 
 function clearSelection () 
@@ -90,6 +103,11 @@ function playGame()
 	moveY = canvas.height - 42;
 	missiles = [];
 	monsters = [];
+	score = 0;
+	lives = 3;
+	speed = 500;
+
+	setupMonsters(canvas, speed);
 
 	backgroundImg = new Image();
 	backgroundImg.onload = function() {
@@ -103,29 +121,18 @@ function playGame()
 	}
 	cannonImg.src = "cannon.png";
 
-	var monster1 = new BlueMonster(canvas, 50, 50);
-	addMonster(canvas, monster1);
-
-	var monster2 = new RedMonster(canvas, 100, 50);
-	addMonster(canvas, monster2);
-
-	var monster3 = new YellowMonster(canvas, 150, 50);
-	addMonster(canvas, monster3);
-
-	var monster4 = new BlueMonster(canvas, 600, 50);
-	addMonster(canvas, monster4);
-
-	var monster5 = new RedMonster(canvas, 650, 50);
-	addMonster(canvas, monster5);
-
-	var monster6 = new YellowMonster(canvas, 700, 50);
-	addMonster(canvas, monster6);
-
-
 	document.onkeydown=keyPressed;
-	window.setInterval("drawBackground()", 100);
+	window.setInterval("drawBackground()", 50);
 
 	clearSelection();
+}
+
+function nextLevel()
+{
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	speed = speed * 10;
+	setupMonsters(canvas, speed);
 }
 
 
