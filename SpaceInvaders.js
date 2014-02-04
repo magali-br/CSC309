@@ -1,7 +1,7 @@
 // To Track Game Status
 var score;
 var lives;
-var speed = 500;
+var monsterSpeed;
 
 // To track the movement of the cannon
 var moveX = 0;
@@ -12,6 +12,8 @@ var backgroundImg;
 
 var missiles = [];
 var monsters = [];
+
+var isShooting = false;
 
 
 function drawBackground()
@@ -35,8 +37,11 @@ function drawBackground()
 
 				score += 10;
 
-
+				if (isShooting) {
+					addMissile();
+				}
 			}
+
 		}
 	}
 
@@ -98,16 +103,7 @@ function playGame()
 {
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	cannonImg = new Image();
-	moveX = canvas.width / 2;
-	moveY = canvas.height - 42;
-	missiles = [];
-	monsters = [];
-	score = 0;
-	lives = 3;
-	speed = 500;
-
-	setupMonsters(canvas, speed);
+	resetGame();
 
 	backgroundImg = new Image();
 	backgroundImg.onload = function() {
@@ -116,23 +112,37 @@ function playGame()
 	}
 	backgroundImg.src = "earth.jpg";
 
+	cannonImg = new Image();
 	cannonImg.onload = function() {
 		drawBackground();
 	}
 	cannonImg.src = "cannon.png";
 
-	document.onkeydown=keyPressed;
+	document.onkeydown = keyPressed;
+	document.onkeyup = keyReleased;
 	window.setInterval("drawBackground()", 50);
 
 	clearSelection();
 }
 
-function nextLevel()
+function resetGame()
 {
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	speed = speed * 10;
-	setupMonsters(canvas, speed);
+	moveX = canvas.width / 2;
+	moveY = canvas.height - 42;
+	missiles = [];
+	monsters = [];
+	score = 0;
+	lives = 3;
+	monsterSpeed = 500;
+	setupMonsters(canvas);
+}
+
+function nextLevel()
+{
+	monsterSpeed = monsterSpeed * 10;
+	resetGame();
 }
 
 
@@ -153,6 +163,7 @@ function keyPressed(e)
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
 	} else if ((e.keyCode == 32) || (e.keyCode == 38)) {
+		isShooting = true;
 		addMissile();
 	} else {
 		return;
@@ -166,5 +177,15 @@ function keyPressed(e)
 
 	img.src = "cannon.png";
 
+}
+
+function keyReleased(e)
+{
+	if ((e.keyCode == 32) || (e.keyCode == 38)) {
+		isShooting = false;
+		drawBackground();
+	} else {
+		return;
+	}
 }
 

@@ -31,7 +31,12 @@ function addMissile()
 							missiles.splice(index, 1);
 							window.clearInterval(missile.intervalVar);
 						}
+						if (isShooting) {
+							addMissile();
+						}
 					}
+
+
 				} , 100);
 	}
 }

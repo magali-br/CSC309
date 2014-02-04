@@ -28,57 +28,6 @@ Monster.prototype.incrementX = 8;
 Monster.prototype.incrementY = 8;
 Monster.prototype.leftmostX = 0;
 
-function addMonster(canvas, monster, argSpeed) 
-{
-	monster.intervalVar = window.setInterval(function() {
-
-		if (goingRight) {
-			monster.x += incrementX;
-			if (monster.x + Monster.prototype.width > rightmostX) {
-				rightmostX = monster.x + Monster.prototype.width;	
-			}
-			if (rightmostX >= canvas.width) {
-				for (var i = 0; i < monsters.length; i++) {
-					monsters[i].y += incrementY;
-				}
-				goingRight = false;
-				//incrementX = incrementX * -1;
-				//monster.y += incrementY;
-				rightmostX = monster.x;
-			}
-		} else {
-			monster.x -= incrementX;
-			if (monster.x < leftmostX) {
-				leftmostX = monster.x;
-			}
-
-			if (leftmostX <= 0) {
-				goingRight = true;
-				//incrementX = incrementX * -1;
-				//monster.y += incrementY;
-				for (var i = 0; i < monsters.length; i++) {
-					monsters[i].y += incrementY;
-				}
-				leftmostX = monster.x;
-			}
-		}
-		
-
-		if ( (monster.y + monster.height) >= canvas.height) {
-			// var index = monsters.indexOf(monster);
-			// if (index > -1) {
-			// 	monsters.splice(index, 1);
-			// 	window.clearInterval(monster.intervalVar);
-			// }
-			// // game over
-			// //playGame();
-			alert("gameOver!");
-
-
-		}
-	}, speed);
-}
-
 function BlueMonster(canvas, x, y)
 {
 	Monster.call(this, canvas, x, y);
@@ -106,7 +55,7 @@ YellowMonster.prototype.constructor = YellowMonster;
 YellowMonster.prototype.img = new Image();
 YellowMonster.prototype.img.src = "m3.png";
 
-function setupMonsters(canvas, argSpeed)
+function setupMonsters(canvas)
 {
 	var initialLeftmostX = 200;
 	var space = Monster.prototype.width + 10;
@@ -119,7 +68,6 @@ function setupMonsters(canvas, argSpeed)
 		for (var j = 0; j < numColumns; j++) {
 			var monsterTypes = [RedMonster, BlueMonster, YellowMonster];
 			var monster = new monsterTypes[randomFromTo(0,2)](canvas, x, y);
-			addMonster(canvas, monster, speed);
 			x += space;
 		}
 		y += space;
@@ -127,6 +75,63 @@ function setupMonsters(canvas, argSpeed)
 
 	leftmostX = initialLeftmostX;
 	rightmostX = x + Monster.prototype.width;
+
+
+	// Update all monsters at once
+	intervalVar = window.setInterval(function() {
+
+
+		for (i = 0; i < monsters.length; i++) {
+			var monster = monsters[i];
+
+			if (goingRight) {
+					monster.x += incrementX;
+					if (monster.x + Monster.prototype.width > rightmostX) {
+						rightmostX = monster.x + Monster.prototype.width;	
+					}
+					if (rightmostX >= canvas.width) {
+						for (var i = 0; i < monsters.length; i++) {
+							monsters[i].y += incrementY;
+						}
+						goingRight = false;
+						//incrementX = incrementX * -1;
+						//monster.y += incrementY;
+						rightmostX = monster.x;
+					}
+				} else {
+					monster.x -= incrementX;
+					if (monster.x < leftmostX) {
+						leftmostX = monster.x;
+					}
+
+					if (leftmostX <= 0) {
+						goingRight = true;
+						//incrementX = incrementX * -1;
+						//monster.y += incrementY;
+						for (var i = 0; i < monsters.length; i++) {
+							monsters[i].y += incrementY;
+						}
+						leftmostX = monster.x;
+					}
+				}
+				
+
+				if ( (monster.y + monster.height) >= canvas.height) {
+					// var index = monsters.indexOf(monster);
+					// if (index > -1) {
+					// 	monsters.splice(index, 1);
+					// 	window.clearInterval(monster.intervalVar);
+					// }
+					// // game over
+					// //playGame();
+					alert("gameOver!");
+					monsters = [];
+					window.clearInterval(intervalVar);
+
+
+				}
+			}
+		}, monsterSpeed);
 }
 
 function randomFromTo(from, to)
