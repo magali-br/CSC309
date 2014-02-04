@@ -72,7 +72,11 @@ function setupMonsters(canvas)
 
 	leftmostX = initialLeftmostX;
 	rightmostX = x + Monster.prototype.width;
+	goingRight = true;
 
+	if (monsterIntervalVar) {
+		window.clearInterval(monsterIntervalVar);
+	}
 
 	// Update all monsters at once
 	monsterIntervalVar = window.setInterval(function() {
@@ -84,9 +88,6 @@ function setupMonsters(canvas)
 			if (rightmostX >= canvas.width) {
 				incrementY = monsterIncrementVertical;
 
-				// won;t work to update rightmost X
-				goingRight = false;
-
 			} else {
 				incrementX = monsterIncrementHorizontal;
 			}
@@ -95,7 +96,6 @@ function setupMonsters(canvas)
 			if (leftmostX <= 0) {
 				incrementY = monsterIncrementVertical;
 
-				goingRight = true;
 			} else {
 				incrementX = monsterIncrementHorizontal * (-1);
 			}
@@ -120,18 +120,16 @@ function setupMonsters(canvas)
 				
 
 			if ( (monster.y + monster.height) >= canvas.height) {
-				// var index = monsters.indexOf(monster);
-				// if (index > -1) {
-				// 	monsters.splice(index, 1);
-				// 	window.clearInterval(monster.intervalVar);
-				// }
-				// // game over
-				// //playGame();
-				alert("gameOver!");
+				alert("Game Over!");
 				resetGame();
 				window.clearInterval(monsterIntervalVar);
 			}
 		}
+
+		if (incrementX == 0) {
+			goingRight = !goingRight;
+		}
+
 	}, monsterSpeed);
 }
 
