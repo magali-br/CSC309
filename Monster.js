@@ -12,7 +12,6 @@ function Monster(canvas, x, y)
 		this.context = canvas.getContext("2d");
 		this.x = x;
 		this.y = y;
-		this.intervalVar;
 		monsters.push(this);
 	}
 }
@@ -141,7 +140,7 @@ function removeMonster(index)
 	monsters.splice(index, 1);
 
 	if (monsters.length == 0) {
-		window.clearInterval(Monster.prototype.intervalVar);
+		window.clearInterval(monsterIntervalVar);
 		nextLevel();
 	}
 
