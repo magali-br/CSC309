@@ -28,14 +28,8 @@ function drawBackground()
 			if (missileHitMonster(missiles[i], monsters[j])) {
 
 				// remove missile
-				window.clearInterval(missiles[i].intervalVar);
-				missiles.splice(i, 1);
-
-				// remove monster
-				window.clearInterval(monsters[j].intervalVar);
-				monsters.splice(j, 1);
-
-				score += 10;
+				removeMissile(i);
+				removeMonster();
 
 				if (isShooting) {
 					addMissile();
@@ -48,9 +42,6 @@ function drawBackground()
 	for (var i = 0; i < monsters.length; i++) {
 		monsters[i].draw();
 		console.log(monsters[i]);
-	}
-	if (monsters.length == 0) {
-		nextLevel();
 	}
 
 	context.drawImage(cannonImg, moveX, moveY, 40, 40);
@@ -127,22 +118,27 @@ function playGame()
 
 function resetGame()
 {
+	score = 0;
+	lives = 3;
+	monsterSpeed = 500;
+	resetImage();
+}
+
+function resetImage()
+{
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
 	moveX = canvas.width / 2;
 	moveY = canvas.height - 42;
 	missiles = [];
 	monsters = [];
-	score = 0;
-	lives = 3;
-	monsterSpeed = 500;
 	setupMonsters(canvas);
 }
 
 function nextLevel()
 {
 	monsterSpeed = monsterSpeed * 10;
-	resetGame();
+	resetImage();
 }
 
 
@@ -187,5 +183,11 @@ function keyReleased(e)
 	} else {
 		return;
 	}
+}
+
+
+function randomFromTo(from, to)
+{
+	return Math.floor(Math.random() * (to - from + 1) + from);
 }
 

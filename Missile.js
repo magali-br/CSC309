@@ -40,3 +40,9 @@ function addMissile()
 				} , 100);
 	}
 }
+
+function removeMissile(index) 
+{
+	window.clearInterval(missiles[index].intervalVar);
+	missiles.splice(index, 1);
+}
