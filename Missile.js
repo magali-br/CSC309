@@ -16,7 +16,7 @@ function addMissile()
 {
 
 	// to only allow one missile
-	//if (missiles.length == 0) {
+	if (missiles.length == 0) {
 
 		var canvas=document.getElementById("gameCanvas");
 		var context=canvas.getContext("2d");
@@ -32,6 +32,6 @@ function addMissile()
 							window.clearInterval(missile.intervalVar);
 						}
 					}
-				}, 100);
-	//}
+				} , 100);
+	}
 }
