@@ -1,9 +1,11 @@
 var leftmostX;
 var rightmostX;
-var monsterIncrementVertical = 8;
-var monsterIncrementHorizontal = 20;
+var monsterIncrementVertical = 20;
+var monsterIncrementHorizontal = 30;
 var goingRight = true;
 var monsterIntervalVar;
+
+var monsterFireIntervalVar;
 
 
 function Monster(canvas, x, y)
@@ -52,14 +54,14 @@ YellowMonster.prototype.constructor = YellowMonster;
 YellowMonster.prototype.img = new Image();
 YellowMonster.prototype.img.src = "m3.png";
 
-function setupMonsters(canvas)
+function setupMonsters(canvas, monsterSpeed)
 {
 	var initialLeftmostX = 200;
 	var space = Monster.prototype.width + 10;
 	var x = 50;
 	var y = 50;
 	var numRows = 5;
-	var numColumns = 1;
+	var numColumns = 11;
 	for (var i = 0; i < numRows; i++){
 		x = initialLeftmostX;
 		for (var j = 0; j < numColumns; j++) {
@@ -71,7 +73,7 @@ function setupMonsters(canvas)
 	}
 
 	leftmostX = initialLeftmostX;
-	rightmostX = x + Monster.prototype.width;
+	rightmostX = x - space + Monster.prototype.width;
 	goingRight = true;
 
 	if (monsterIntervalVar) {
@@ -85,19 +87,23 @@ function setupMonsters(canvas)
 
 		if (goingRight) {
 
-			if (rightmostX >= canvas.width) {
+			if (rightmostX >= canvas.width - Monster.prototype.width + 5) {
 				incrementY = monsterIncrementVertical;
 
 			} else {
 				incrementX = monsterIncrementHorizontal;
+				rightmostX += monsterIncrementHorizontal;
+				leftmostX += monsterIncrementHorizontal;
 			}
 		} else {
 
-			if (leftmostX <= 0) {
+			if (leftmostX <= Monster.prototype.width - 10) {
 				incrementY = monsterIncrementVertical;
 
 			} else {
 				incrementX = monsterIncrementHorizontal * (-1);
+				rightmostX -= monsterIncrementHorizontal;
+				leftmostX -= monsterIncrementHorizontal;
 			}
 		}
 
@@ -105,20 +111,7 @@ function setupMonsters(canvas)
 			var monster = monsters[i];
 			monster.x += incrementX;
 			monster.y += incrementY;
-
-			if (goingRight) {
-				if (monster.x + Monster.prototype.width > rightmostX) {
-					rightmostX = monster.x + Monster.prototype.width;	
-				}
-
-			} else {
-
-				if (monster.x < leftmostX) {
-					leftmostX = monster.x;
-				}
-			}
 				
-
 			if ( (monster.y + monster.height) >= canvas.height) {
 				alert("Game Over!");
 				resetGame();
@@ -131,6 +124,28 @@ function setupMonsters(canvas)
 		}
 
 	}, monsterSpeed);
+
+	setupMonsterFire();
+}
+
+function setupMonsterFire()
+{
+	var firingTime = randomFromTo(3000, 10000);
+	monsterFireIntervalVar = window.setInterval(monsterFire, firingTime);
+}
+
+function monsterFire()
+{
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	var monster = monsters[randomFromTo(0, monsters.length - 1)];
+	context.fillStyle = "red";
+	context.fillRect(monster.x, monster.y, 5, 5);
+
+	// find random monster to fire
+	console.log("monster fires!!");
+	window.clearInterval(monsterFireIntervalVar);
+	setupMonsterFire();
 }
 
 function removeMonster(index)

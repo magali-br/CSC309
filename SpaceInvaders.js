@@ -1,6 +1,7 @@
 // To Track Game Status
 var score;
 var lives;
+var level;
 var monsterSpeed;
 
 // To track the movement of the cannon
@@ -29,7 +30,7 @@ function drawBackground()
 
 				// remove missile
 				removeMissile(i);
-				removeMonster();
+				removeMonster(j);
 
 				if (isShooting) {
 					addMissile();
@@ -41,12 +42,12 @@ function drawBackground()
 
 	for (var i = 0; i < monsters.length; i++) {
 		monsters[i].draw();
-		console.log(monsters[i]);
 	}
 
 	context.drawImage(cannonImg, moveX, moveY, 40, 40);
 	scoreUpdate(score);
 	livesUpdate(lives);
+	levelUpdate(level);
 
 }
 
@@ -89,6 +90,15 @@ function livesUpdate(lives)
 	context.fillText("LIVES: " + lives + "X", 650, 22);
 }
 
+function levelUpdate(level) 
+{
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	context.fillStyle = "white";
+	context.font = "bold 24px Arial";
+	context.fillText("LEVEL: " + level, 1, 50);
+}
+
 
 function playGame()
 {
@@ -118,9 +128,10 @@ function playGame()
 
 function resetGame()
 {
+	level = 1;
 	score = 0;
 	lives = 3;
-	monsterSpeed = 500;
+	monsterSpeed = 800;
 	resetImage();
 }
 
@@ -132,12 +143,13 @@ function resetImage()
 	moveY = canvas.height - 42;
 	missiles = [];
 	monsters = [];
-	setupMonsters(canvas);
+	setupMonsters(canvas, monsterSpeed);
 }
 
 function nextLevel()
 {
-	monsterSpeed = monsterSpeed * 10;
+	monsterSpeed = monsterSpeed - 200;
+	level += 1;
 	resetImage();
 }
 
