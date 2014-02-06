@@ -222,7 +222,7 @@ function keyPressed(e)
 	*/
 function keyReleased(e)
 {
-	if ((e.keyCode == 32) || (e.keyCode == 38)) {
+	if (e.keyCode == 32) {
 		isShooting = false;
 		drawBackground();
 	} else {
