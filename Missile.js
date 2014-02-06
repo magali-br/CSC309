@@ -45,11 +45,8 @@ function addMissile(x, y, goingUp)
 				missile.y -= 30; 
 
 				if (missile.y <= 0) {
-					var index = missiles.indexOf(missile);
-					if (index > -1) {
-						missiles.splice(index, 1);
-						window.clearInterval(missile.intervalVar);
-					}
+					removeMissile(missiles, missiles.indexOf(missile));
+
 					if (isShooting) {
 						addMissile(x, y, goingUp);
 					}
@@ -69,47 +66,43 @@ function addMissile(x, y, goingUp)
 			missile.y += 10;
 
 			if (missile.y >= canvas.height) {
-				var index = monsterMissiles.indexOf(missile);
-				if (index > -1) {
-					monsterMissiles.splice(index, 1);
-					window.clearInterval(missile.intervalVar);
-				}
+				removeMissile(monsterMissiles, monsterMissiles.indexOf(missile));
 			}
 
 
 		} , monsterMissileTimeInterval);
 	}
 
-	// to only allow one missile
-
 }
 
-function removeMissile(index) 
+function removeMissile(missileArray, index) 
 {
-	window.clearInterval(missiles[index].intervalVar);
-	missiles.splice(index, 1);
+	if (index > -1) {
+		window.clearInterval(missileArray[index].intervalVar);
+		missileArray.splice(index, 1);
+	}
 }
 
 function missileHitMonster(missile, monster)
 {
-	if (missile && monster) {
-		if ( (monster.x <= missile.x) 
-			&& (missile.x <= (monster.x + monster.width) )
-			&& (monster.y <= missile.y)
-			&& (missile.y <= (monster.y + monster.height)) ) {
-			return true;
-		}
+	if (monster) {
+		return missileHit(missile, monster.x, monster.y, monster.width, monster.height);
 	}
 	return false;
 }
 
 function missileHitCannon(missile)
 {
+	return missileHit(missile, cannonX, cannonY, cannonImageWidth, cannonImageHeight);
+}
+
+function missileHit(missile, x, y, width, height)
+{
 	if (missile) {
-		if ( (cannonX <= missile.x) 
-			&& (missile.x <= (cannonX + cannonImageWidth) )
-			&& (cannonY <= missile.y)
-			&& (missile.y <= (cannonY + cannonImageHeight)) ) {
+		if ( (x <= missile.x) 
+			&& (missile.x <= (x + width) )
+			&& (y <= missile.y)
+			&& (missile.y <= (y + height)) ) {
 			return true;
 		}
 	}

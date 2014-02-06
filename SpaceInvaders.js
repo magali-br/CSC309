@@ -33,7 +33,7 @@ function drawBackground()
 			if (missileHitMonster(missiles[i], monsters[j])) {
 
 				// remove missile
-				removeMissile(i);
+				removeMissile(missiles, i);
 				removeMonster(j);
 
 				if (isShooting) {
