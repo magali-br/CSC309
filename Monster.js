@@ -60,8 +60,8 @@ function setupMonsters(canvas, monsterSpeed)
 	var space = Monster.prototype.width + 10;
 	var x = 50;
 	var y = 50;
-	var numRows = 1;
-	var numColumns = 1;
+	var numRows = 5;
+	var numColumns = 11;
 	for (var i = 0; i < numRows; i++){
 		x = initialLeftmostX;
 		for (var j = 0; j < numColumns; j++) {
@@ -89,21 +89,25 @@ function setupMonsters(canvas, monsterSpeed)
 
 			if (rightmostX >= canvas.width - Monster.prototype.width + 5) {
 				incrementY = monsterIncrementVertical;
+				rightmostX = 0;
+				goingRight = !goingRight;
 
 			} else {
 				incrementX = monsterIncrementHorizontal;
-				rightmostX += monsterIncrementHorizontal;
-				leftmostX += monsterIncrementHorizontal;
+				//rightmostX += monsterIncrementHorizontal;
+				//leftmostX += monsterIncrementHorizontal;
 			}
 		} else {
 
 			if (leftmostX <= Monster.prototype.width - 10) {
 				incrementY = monsterIncrementVertical;
+				leftmostX = canvas.width;
+				goingRight = !goingRight;
 
 			} else {
 				incrementX = monsterIncrementHorizontal * (-1);
-				rightmostX -= monsterIncrementHorizontal;
-				leftmostX -= monsterIncrementHorizontal;
+				//rightmostX -= monsterIncrementHorizontal;
+				//leftmostX -= monsterIncrementHorizontal;
 			}
 		}
 
@@ -115,10 +119,16 @@ function setupMonsters(canvas, monsterSpeed)
 			if ( (monster.y + monster.height) >= canvas.height) {
 				gameOver();
 			}
-		}
 
-		if (incrementX == 0) {
-			goingRight = !goingRight;
+			if (goingRight) {
+				if ((monster.x + monster.width) > rightmostX) {
+					rightmostX = monster.x + monster.width
+				}
+			} else {
+				if (monster.x < leftmostX) {
+					leftmostX = monster.x;
+				}
+			}
 		}
 
 	}, monsterSpeed);
