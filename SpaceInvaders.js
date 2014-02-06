@@ -3,15 +3,19 @@ var score;
 var lives;
 var level;
 var monsterSpeed;
+var monsterMissileTimeInterval;
 
 // To track the movement of the cannon
-var moveX = 0;
-var moveY = 0;
+var cannonX = 0;
+var cannonY = 0;
+var cannonImageWidth = 40;
+var cannonImageHeight = 40;
 
 var cannonImg;
 var backgroundImg;
 
 var missiles = [];
+var monsterMissiles = [];
 var monsters = [];
 
 var isShooting = false;
@@ -33,10 +37,21 @@ function drawBackground()
 				removeMonster(j);
 
 				if (isShooting) {
-					addMissile();
+					addCannonMissile();
 				}
 			}
 
+		}
+	}
+
+	for (var i = 0; i < monsterMissiles.length; i++) {
+		monsterMissiles[i].draw();
+		if (missileHitCannon(monsterMissiles[i])) {
+			lives -= 1;
+			if (lives == 0) {
+				gameOver();
+			}
+			resetImage();
 		}
 	}
 
@@ -44,22 +59,11 @@ function drawBackground()
 		monsters[i].draw();
 	}
 
-	context.drawImage(cannonImg, moveX, moveY, 40, 40);
+	context.drawImage(cannonImg, cannonX, cannonY, cannonImageWidth, cannonImageHeight);
 	scoreUpdate(score);
 	livesUpdate(lives);
 	levelUpdate(level);
 
-}
-
-function missileHitMonster(missile, monster)
-{
-	if ( (monster.x <= missile.x) 
-		&& (missile.x <= (monster.x + monster.width) )
-		&& (monster.y <= missile.y)
-		&& (missile.y <= (monster.y + monster.height)) ) {
-			return true;
-		}
-	return false;
 }
 
 function clearSelection () 
@@ -132,6 +136,9 @@ function resetGame()
 	score = 0;
 	lives = 3;
 	monsterSpeed = 800;
+	monsterMissileTimeInterval = 500;
+	if (monsterIntervalVar) window.clearInterval(monsterIntervalVar);
+	if (monsterFireIntervalVar) window.clearInterval(monsterFireIntervalVar);
 	resetImage();
 }
 
@@ -139,18 +146,26 @@ function resetImage()
 {
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
-	moveX = canvas.width / 2;
-	moveY = canvas.height - 42;
+	cannonX = canvas.width / 2;
+	cannonY = canvas.height - 42;
 	missiles = [];
 	monsters = [];
+	monsterMissiles = [];
 	setupMonsters(canvas, monsterSpeed);
 }
 
 function nextLevel()
 {
 	monsterSpeed = monsterSpeed - 200;
+	monsterMissileTimeInterval = monsterMissileTimeInterval - 100;
 	level += 1;
 	resetImage();
+}
+
+function gameOver()
+{
+	alert("Game Over!");
+	resetGame();
 }
 
 
@@ -162,23 +177,23 @@ function keyPressed(e)
 
 	var img = new Image();
 
-	if ((e.keyCode == 37) && (moveX >= 5))  {
-		moveX -= 10;
-	} else if ((e.keyCode == 39) && (moveX <= (canvas.width - 43))) {
-		moveX += 10;
+	if ((e.keyCode == 37) && (cannonX >= 5))  {
+		cannonX -= 10;
+	} else if ((e.keyCode == 39) && (cannonX <= (canvas.width - 43))) {
+		cannonX += 10;
 	/*} else if ((e.keyCode == 38) && (moveY >= 5))  {
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
 	} else if ((e.keyCode == 32) || (e.keyCode == 38)) {
 		isShooting = true;
-		addMissile();
+		addCannonMissile();
 	} else {
 		return;
 	}
 	drawBackground();
 	img.onload = function() {
-		context.drawImage(img, moveX, moveY, 40, 40);
+		context.drawImage(img, cannonX, cannonY, 40, 40);
 		scoreUpdate(score);
 		livesUpdate(lives);
 	}

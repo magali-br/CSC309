@@ -115,7 +115,9 @@ function setupMonsters(canvas, monsterSpeed)
 			if ( (monster.y + monster.height) >= canvas.height) {
 				alert("Game Over!");
 				resetGame();
+				gameOver();
 				window.clearInterval(monsterIntervalVar);
+				window.clearInterval(monsterFireIntervalVar);
 			}
 		}
 
@@ -139,11 +141,7 @@ function monsterFire()
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
 	var monster = monsters[randomFromTo(0, monsters.length - 1)];
-	context.fillStyle = "red";
-	context.fillRect(monster.x, monster.y, 5, 5);
-
-	// find random monster to fire
-	console.log("monster fires!!");
+	addMonsterMissile(monster);
 	window.clearInterval(monsterFireIntervalVar);
 	setupMonsterFire();
 }
