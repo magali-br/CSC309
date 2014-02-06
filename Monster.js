@@ -35,6 +35,8 @@ function Monster(canvas, x, y)
 
 Monster.prototype.width = 30;
 Monster.prototype.height = 30;
+
+/* Draw the monster on the canvas. */
 Monster.prototype.draw = function () 
 {
 	if (this.context) {
