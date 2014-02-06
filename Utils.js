@@ -12,6 +12,7 @@ function setupCanvas() {
 	// For bigger screen 
 	canvasElement.setAttribute("width", 768);
 	canvasElement.setAttribute("height", 576);
+	canvasElement.setAttribute("tabindex", 1);
 	divCanvas.appendChild(canvasElement);
 }
 
@@ -22,8 +23,5 @@ function randomFromTo(from, to)
 
 function clearSelection () 
 {
-	if (document.selection)
-		document.selection.empty();
-	else if (window.getSelection)
-		window.getSelection().removeAllRanges();
+	document.getElementById("gameCanvas").focus();
 }
