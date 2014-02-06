@@ -1,13 +1,28 @@
-var leftmostX;
-var rightmostX;
-var monsterIncrementVertical = 20;
-var monsterIncrementHorizontal = 30;
-var goingRight = true;
-var monsterIntervalVar;
+// The horizontal position of the leftmost monster when the monsters move left
+var leftmostX; 
 
+// The horizontal position of the rightmost monster when the monsters move right
+var rightmostX; 
+
+// The vertical increment for the monsters' movement
+var monsterIncrementVertical = 20;
+
+// The horizontal increment for the monsters' movement
+var monsterIncrementHorizontal = 30;
+
+// Whether the monsters are moving right
+var goingRight = true; 
+
+// The variable for the time interval causing the monsters' movement
+var monsterIntervalVar; 
+
+// The variable for the time interval tracking the monsters' missile-firing
 var monsterFireIntervalVar;
 
-
+/* A Monster object.
+	canvas - the canvas the monster should be drawn on
+	x - the monster's horizontal position
+	y - the monster's vertical position */
 function Monster(canvas, x, y)
 {
 	if (canvas) {
@@ -27,6 +42,10 @@ Monster.prototype.draw = function ()
 	}
 }
 
+/* A BlueMonster object, a subclass of Monster, of blue colour.
+	canvas - the canvas the monster should be drawn on
+	x - the monster's horizontal position
+	y - the monster's vertical position */
 function BlueMonster(canvas, x, y)
 {
 	Monster.call(this, canvas, x, y);
@@ -36,6 +55,10 @@ BlueMonster.prototype.constructor = BlueMonster;
 BlueMonster.prototype.img = new Image();
 BlueMonster.prototype.img.src = "m1.png";
 
+/* A RedMonster object, a subclass of Monster type, of red colour.
+	canvas - the canvas the monster should be drawn on
+	x - the monster's horizontal position
+	y - the monster's vertical position */
 function RedMonster(canvas, x, y)
 {
 	Monster.call(this, canvas, x, y);
@@ -45,6 +68,10 @@ RedMonster.prototype.constructor = RedMonster;
 RedMonster.prototype.img = new Image();
 RedMonster.prototype.img.src = "m2.png";
 
+/* A YellowMonster object, a subclass of Monster type, of yellow colour.
+	canvas - the canvas the monster should be drawn on
+	x - the monster's horizontal position
+	y - the monster's vertical position */
 function YellowMonster(canvas, x, y)
 {
 	Monster.call(this, canvas, x, y);
@@ -54,6 +81,10 @@ YellowMonster.prototype.constructor = YellowMonster;
 YellowMonster.prototype.img = new Image();
 YellowMonster.prototype.img.src = "m3.png";
 
+
+/* Setup the 11 columns and 5 rows of monsters of random colours.
+	canvas - the canvas on which the monsters will be drawn
+	monsterSpeed - the time interval for how often the monsters move*/
 function setupMonsters(canvas, monsterSpeed)
 {
 	var initialLeftmostX = 200;
@@ -132,12 +163,15 @@ function setupMonsters(canvas, monsterSpeed)
 	setupMonsterFire();
 }
 
+/* Setup a random interval after which a monster will fire a missile.*/
 function setupMonsterFire()
 {
 	var firingTime = randomFromTo(3000, 10000);
 	monsterFireIntervalVar = window.setInterval(monsterFire, firingTime);
 }
 
+/* Fire a missile from a random monster and setupe the random firing interval 
+	once more. */
 function monsterFire()
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -148,6 +182,9 @@ function monsterFire()
 	setupMonsterFire();
 }
 
+/* Remove a monster from the game.
+	index - the index of the monster in the array of monsters to be removed 
+	*/
 function removeMonster(index)
 {
 	monsters.splice(index, 1);
