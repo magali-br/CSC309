@@ -24,8 +24,16 @@ var monsterMissiles = [];
 // The array holding the monsters currently on the screen
 var monsters = [];
 
-// Whether the user is currently shooting by holding down the space button
+// Holds whether missiles are currently being shot by holding down the space key
 var isShooting = false;
+
+// Holds whether the cannon is currently moving right by holding down 
+//the right-arrow key 
+var isMovingRight = false;
+
+// Holds whether the cannon is currently moving left by holding down 
+//the left-arrow key 
+var isMovingLeft = false;
 
 /* Redraw the background image, the cannon, the monsters, and the missiles.*/
 function drawBackground()
@@ -189,28 +197,22 @@ function keyPressed(e)
 	var canvas=document.getElementById("gameCanvas");
 	var context=canvas.getContext("2d");
 
-
-	var img = new Image();
-
-	if ((e.keyCode == 37) && (cannonX >= 5))  {
-		cannonX -= 10;
-	} else if ((e.keyCode == 39) && (cannonX <= (canvas.width - 43))) {
-		cannonX += 10;
+	if (e.keyCode == 37) {
+		checkAndMoveLeft();
+	} else if (e.keyCode == 39) {
+		checkAndMoveRight();
 	} else if (e.keyCode == 32) {
 		isShooting = true;
+		if (isMovingLeft)  {
+			checkAndMoveLeft();
+		} else if (isMovingRight) {
+			checkAndMoveRight();
+		}
 		addCannonMissile();
 	} else {
 		return;
 	}
 	drawBackground();
-	img.onload = function() {
-		context.drawImage(img, cannonX, cannonY, 40, 40);
-		scoreUpdate(score);
-		livesUpdate(lives);
-	}
-
-	img.src = "cannon.png";
-
 }
 
 /* An event handler for the window for when a key is released (onkeyup).
@@ -221,8 +223,35 @@ function keyReleased(e)
 	if (e.keyCode == 32) {
 		isShooting = false;
 		drawBackground();
+	} else if (e.keyCode == 37) {
+		isMovingLeft = false;
+	} else if (e.keyCode == 39) {
+		isMovingRight = false;
 	} else {
 		return;
 	}
 }
+
+/* Check whether the cannon is at the leftmost edge of the screen;
+	if it is not, move it to the left. */
+function checkAndMoveLeft()
+{
+	if (cannonX >= 5) {
+		cannonX -= 10;
+		isMovingLeft = true;
+	}
+}
+
+/* Check whether the cannon is at the rightmost edge of the screen;
+	if it is not, move it to the right. */
+function checkAndMoveRight()
+{
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
+	if (cannonX <= (canvas.width - 43)) {
+		cannonX += 10;
+		isMovingRight = true;
+	}
+}
+
 
