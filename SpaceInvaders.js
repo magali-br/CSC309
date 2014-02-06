@@ -156,8 +156,8 @@ function resetImage()
 
 function nextLevel()
 {
-	monsterSpeed = monsterSpeed - 200;
-	monsterMissileTimeInterval = monsterMissileTimeInterval - 100;
+	monsterSpeed = monsterSpeed / 2;
+	monsterMissileTimeInterval = monsterMissileTimeInterval - 200;
 	level += 1;
 	resetImage();
 }

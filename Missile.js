@@ -48,7 +48,7 @@ function addMissile(x, y, goingUp)
 					removeMissile(missiles, missiles.indexOf(missile));
 
 					if (isShooting) {
-						addMissile(x, y, goingUp);
+						addCannonMissile();
 					}
 				}
 
