@@ -19,3 +19,11 @@ function randomFromTo(from, to)
 {
 	return Math.floor(Math.random() * (to - from + 1) + from);
 }
+
+function clearSelection () 
+{
+	if (document.selection)
+		document.selection.empty();
+	else if (window.getSelection)
+		window.getSelection().removeAllRanges();
+}

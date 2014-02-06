@@ -94,8 +94,6 @@ function setupMonsters(canvas, monsterSpeed)
 
 			} else {
 				incrementX = monsterIncrementHorizontal;
-				//rightmostX += monsterIncrementHorizontal;
-				//leftmostX += monsterIncrementHorizontal;
 			}
 		} else {
 
@@ -106,8 +104,6 @@ function setupMonsters(canvas, monsterSpeed)
 
 			} else {
 				incrementX = monsterIncrementHorizontal * (-1);
-				//rightmostX -= monsterIncrementHorizontal;
-				//leftmostX -= monsterIncrementHorizontal;
 			}
 		}
 
