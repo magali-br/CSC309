@@ -182,7 +182,7 @@ function keyPressed(e)
 		moveY -= 5;
 	} else if ((e.keyCode == 40) && (moveY <= canvas.height - 42)) {
 		moveY += 5;*/
-	} else if ((e.keyCode == 32) || (e.keyCode == 38)) {
+	} else if (e.keyCode == 32) {
 		isShooting = true;
 		addCannonMissile();
 	} else {

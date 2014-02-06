@@ -53,7 +53,7 @@ function addMissile(x, y, goingUp)
 				}
 
 
-			} , 100);
+			} , 50);
 		}
 	} else {
 		var colour = "red";
