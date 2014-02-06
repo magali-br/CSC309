@@ -1,4 +1,4 @@
-// To Track Game Status
+// To track the game status
 var score;
 var lives;
 var level;
@@ -6,21 +6,28 @@ var monsterSpeed;
 var monsterMissileTimeInterval;
 
 // To track the movement of the cannon
-var cannonX = 0;
-var cannonY = 0;
-var cannonImageWidth = 40;
-var cannonImageHeight = 40;
+var cannonX = 0; // The cannon's horizontal position
+var cannonY = 0; // The cannon's vertical position
+var cannonImageWidth = 40; // The width of the cannon
+var cannonImageHeight = 40; // The height of the cannon
+var cannonImg; // The image of the cannon
 
-var cannonImg;
+// The background image
 var backgroundImg;
 
+// The array holding the missiles fired by the cannon
 var missiles = [];
+
+// The array holding the missiles fired by the monsters
 var monsterMissiles = [];
+
+// The array holding the monsters currently on the screen
 var monsters = [];
 
+// Whether the user is currently shooting by holding down the space button
 var isShooting = false;
 
-
+/* Redraw the background image, the cannon, the monsters, and the missiles.*/
 function drawBackground()
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -32,7 +39,6 @@ function drawBackground()
 		for (var j = 0; j < monsters.length; j++) {
 			if (missileHitMonster(missiles[i], monsters[j])) {
 
-				// remove missile
 				removeMissile(missiles, i);
 				removeMonster(j);
 
@@ -40,7 +46,6 @@ function drawBackground()
 					addCannonMissile();
 				}
 			}
-
 		}
 	}
 
@@ -65,9 +70,11 @@ function drawBackground()
 	scoreUpdate(score);
 	livesUpdate(lives);
 	levelUpdate(level);
-
 }
 
+/* Update the displayed score. 
+	score - the current score for the game
+	*/
 function scoreUpdate(score) 
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -77,7 +84,9 @@ function scoreUpdate(score)
 	context.fillText("SCORE: " + score, 1, 22);
 }
 
-
+/* Update the displayed number of lives. 
+	lives - the current number of lives remaining for the game
+	*/
 function livesUpdate(lives) 
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -87,6 +96,9 @@ function livesUpdate(lives)
 	context.fillText("LIVES: " + lives + "X", 650, 22);
 }
 
+/* Update the displayed level. 
+	level - the current level at which the user is playing
+	*/
 function levelUpdate(level) 
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -96,7 +108,7 @@ function levelUpdate(level)
 	context.fillText("LEVEL: " + level, 1, 50);
 }
 
-
+/* Setup the game for the first time, load the images and set up the game.*/
 function playGame()
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -123,6 +135,7 @@ function playGame()
 	clearSelection();
 }
 
+/* Reset the game in order to start at base level. */
 function resetGame()
 {
 	level = 1;
@@ -135,6 +148,7 @@ function resetGame()
 	resetImage();
 }
 
+/* Reset the image to its start position, for example at a new level. */
 function resetImage()
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -147,6 +161,7 @@ function resetImage()
 	setupMonsters(canvas, monsterSpeed);
 }
 
+/* Move onto the next level of the game. */
 function nextLevel()
 {
 	monsterSpeed = monsterSpeed - 200;
@@ -159,13 +174,16 @@ function nextLevel()
 	}
 }
 
+/* Notify the user that they have lost the game and reset the game.*/
 function gameOver()
 {
 	alert("Game Over!");
 	resetGame();
 }
 
-
+/* An event handler for the window for when a key is pressed (onkeydown).
+	e - the object representing the key that has been pressed.
+	*/
 function keyPressed(e)
 {
 	var canvas=document.getElementById("gameCanvas");
@@ -199,6 +217,9 @@ function keyPressed(e)
 
 }
 
+/* An event handler for the window for when a key is released (onkeyup).
+	e - the object representing the key that has been released.
+	*/
 function keyReleased(e)
 {
 	if ((e.keyCode == 32) || (e.keyCode == 38)) {
