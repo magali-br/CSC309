@@ -60,8 +60,8 @@ function setupMonsters(canvas, monsterSpeed)
 	var space = Monster.prototype.width + 10;
 	var x = 50;
 	var y = 50;
-	var numRows = 5;
-	var numColumns = 11;
+	var numRows = 1;
+	var numColumns = 1;
 	for (var i = 0; i < numRows; i++){
 		x = initialLeftmostX;
 		for (var j = 0; j < numColumns; j++) {
@@ -113,11 +113,7 @@ function setupMonsters(canvas, monsterSpeed)
 			monster.y += incrementY;
 				
 			if ( (monster.y + monster.height) >= canvas.height) {
-				alert("Game Over!");
-				resetGame();
 				gameOver();
-				window.clearInterval(monsterIntervalVar);
-				window.clearInterval(monsterFireIntervalVar);
 			}
 		}
 
@@ -150,12 +146,12 @@ function removeMonster(index)
 {
 	monsters.splice(index, 1);
 
+	score += 10;
+
 	if (monsters.length == 0) {
 		window.clearInterval(monsterIntervalVar);
 		nextLevel();
 	}
-
-	score += 10;
 }
 
 

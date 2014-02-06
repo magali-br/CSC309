@@ -51,7 +51,9 @@ function drawBackground()
 			if (lives == 0) {
 				gameOver();
 			}
-			resetImage();
+			cannonX = canvas.width / 2;
+			missiles = [];
+			monsterMissiles = [];
 		}
 	}
 
@@ -136,7 +138,7 @@ function resetGame()
 	score = 0;
 	lives = 3;
 	monsterSpeed = 800;
-	monsterMissileTimeInterval = 500;
+	monsterMissileTimeInterval = 100;
 	if (monsterIntervalVar) window.clearInterval(monsterIntervalVar);
 	if (monsterFireIntervalVar) window.clearInterval(monsterFireIntervalVar);
 	resetImage();
@@ -156,10 +158,14 @@ function resetImage()
 
 function nextLevel()
 {
-	monsterSpeed = monsterSpeed / 2;
-	monsterMissileTimeInterval = monsterMissileTimeInterval - 200;
+	monsterSpeed = monsterSpeed - 200;
 	level += 1;
-	resetImage();
+	if (level == 5) {
+		alert("You Won The Game! Your Score Is " + score + "!");
+		resetGame();
+	} else {
+		resetImage();
+	}
 }
 
 function gameOver()
